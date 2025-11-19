@@ -7,8 +7,8 @@ username = os.getenv("ORACLE_USER")
 dsn = os.getenv("ORACLE_DSN")
 password = os.getenv("ORACLE_PASSWORD")
 
-def get_connection():     
-    return oracledb.connect(user=username, password= password, dsn=dsn)
+def get_connection():
+    return oracledb.connect(user=username, password=password, dsn=dsn)
 
 def create_schema(query):
     try:
