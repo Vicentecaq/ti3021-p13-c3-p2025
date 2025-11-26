@@ -8,16 +8,16 @@ DEPARTAMENTO
 
 CREATE TABLE PARTICIPANTES (
     id_participante INTEGER PRIMARY KEY,
-    nombre VARCHAR2(100),
+    nombre VARCHAR(64),
     edad INTEGER,
     num_inscripcion INTEGER
 )
 
 CREATE TABLE ATLETA (
     id_atleta INTEGER PRIMARY KEY,
-    disciplina VARCHAR2(100),
+    disciplina VARCHAR(64),
     marca FLOAT,
-    FOREIGN KEY (id_atleta) REFERENCES PARTICIPANTES(id_participante)
+    FOREIGN KEY (id_participante) REFERENCES PARTICIPANTES(id)
 )
 
 CREATE TABLE ENTRENADOR (
