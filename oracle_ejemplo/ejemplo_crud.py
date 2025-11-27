@@ -2,6 +2,8 @@ from datetime import datetime
 import oracledb
 import os
 from dotenv import load_dotenv
+from typing import Optional
+
 load_dotenv() 
 
 username = os.getenv("ORACLE_USER")
@@ -20,41 +22,41 @@ def create_schema(query):
     except oracledb.DatabaseError as error:
         print(f"No se pudo crear la tabla: {error}")
 
-tables = [
-    (
-        "CREATE TABLE PARTICIPANTES ("
-        "id INTEGER PRIMARY KEY,"
-        "nombre VARCHAR(64),"
-        "edad INTEGER,"
-        "numInscripcion INTEGER,"
-        ")"
-    ),
-    (
-        "CREATE TABLE ATLETA("
-        "id INTEGER PRIMARY KEY,"
-        "disciplina VARCHAR(64),"
-        "marca FLOAT,"
-        "FOREIGN KEY (idParticipante) REFERENCES PARTICIPANTES(id)"
-        ")"
-    ),
-    (
-        "CREATE TABLE JUEZ ("
-        "idParticipante INTEGER PRIMARY KEY,"
-        "especialidad VARCHAR2(64),"
-        "FOREIGN KEY (idParticipante) REFERENCES PARTICIPANTES(id)"
-        ")"
-    ),
-    (
-        "CREATE TABLE ENTRENADOR ("
-        "idParticipante INTEGER PRIMARY KEY,"
-        "equipo VARCHAR2(64),"
-        "FOREIGN KEY (idParticipante) REFERENCES PARTICIPANTES(id)"
-        ")"
-    ),
-]
-
-for query in tables:
-    create_schema(query)
+def create_all_tables():
+    tables = [
+        (
+            "CREATE TABLE PARTICIPANTES ("
+            "id INTEGER PRIMARY KEY,"
+            "nombre VARCHAR(64),"
+            "edad INTEGER,"
+            "numInscripcion INTEGER,"
+            ")"
+        ),
+        (
+            "CREATE TABLE ATLETA("
+            "id INTEGER PRIMARY KEY,"
+            "disciplina VARCHAR(64),"
+            "marca FLOAT,"
+            "FOREIGN KEY (idParticipante) REFERENCES PARTICIPANTES(id)"
+            ")"
+        ),
+        (
+            "CREATE TABLE JUEZ ("
+            "idParticipante INTEGER PRIMARY KEY,"
+            "especialidad VARCHAR2(64),"
+            "FOREIGN KEY (idParticipante) REFERENCES PARTICIPANTES(id)"
+            ")"
+        ),
+        (
+            "CREATE TABLE ENTRENADOR ("
+            "idParticipante INTEGER PRIMARY KEY,"
+            "equipo VARCHAR2(64),"
+            "FOREIGN KEY (idParticipante) REFERENCES PARTICIPANTES(id)"
+            ")"
+        ),
+    ]
+    for query in tables:
+        create_schema(query)
 
 # CREATE - insercion de datos
 def create_participante(
@@ -263,7 +265,6 @@ def read_juez_by_id(id: int):
     except oracledb.DatabaseError as error:
         print(f"No se pudo ejecutar la query {error} \n {sql} \n {parametros}")
 
-
 def read_entrenadores():
     sql = (
         "SELECT * FROM ENTRENADOR"
@@ -299,3 +300,171 @@ def read_entrenador_by_id(id: int):
         print(f"No se pudo ejecutar la query {error} \n {sql} \n {parametros}")
 
 # UPDATE - Actualización de datos
+def update_participantes(
+        id: int,
+        nombre: Optional[str] = None,
+        edad: Optional[int] = None,
+        numInscripcion: Optional[int] = None
+):
+    modificaciones = []
+    parametros = {"id": id}
+
+    if nombre is not None:
+        modificaciones.append("nombre =: nombre")
+        parametros["nombre"] = nombre
+    if edad is not None:
+        modificaciones.append("edad =: edad")
+        parametros["edad"] = edad
+    if numInscripcion is not None:
+        modificaciones.append("numInscripcion =: numInscripcion")
+        parametros["numInscripcion"] = numInscripcion
+    if not modificaciones:
+        return print("No has enviado datos por modificar")
+    
+sql = f"UPDATE PARTICIPANTES SET {", ".join(modificaciones) } WHERE id =: id"
+
+with get_connection() as conn:
+    with conn.cursor() as cur:
+        cur.execute(sql, parametros)
+    conn.commit()
+    print(f"Dato con ID={id} actualizado.")
+
+def update_atleta(
+        id: int,
+        disciplina: str,
+        marca: float
+):
+    modificaciones = []
+    parametros = {"id": id}
+
+    if disciplina is not None:
+        modificaciones.append("disciplina =: disciplina")
+        parametros["disciplina"] = disciplina
+    if marca is not None:
+        modificaciones.append("marca =: marca")
+        parametros["marca"] = marca
+
+sql = f"UPDATE PARTICIPANTES SET {", ".join(modificaciones) } WHERE id =: id"
+
+with get_connection() as conn:
+    with conn.cursor() as cur:
+        cur.execute(sql, parametros)
+    conn.commit()
+    print(f"Dato con ID={id} actualizado.")
+
+def update_juez(
+        idParticipantes: int,
+        especialidad: str,
+
+):
+    modificaciones = []
+    parametros = {"id": id}
+
+    if idParticipantes is not None:
+        modificaciones.append("idParticipantes =: idParticipantes")
+        parametros["idParticipantes"] = idParticipantes
+    if especialidad is not None:
+        modificaciones.append("especialidad =: especialidad")
+        parametros["especialidad"] = especialidad
+
+sql = f"UPDATE JUEZ SET {", ".join(modificaciones) } WHERE id =: id"
+
+with get_connection() as conn:
+    with conn.cursor() as cur:
+        cur.execute(sql, parametros)
+    conn.commit()
+    print(f"Dato con ID={id} actualizado.")
+
+def update_entrenador(
+        idParticipantes: int,
+        equipo: str
+
+):
+    modificaciones = []
+    parametros = {"id": id}
+
+    if idParticipantes is not None:
+        modificaciones.append("idParticipantes =: idParticipantes")
+        parametros["idParticipantes"] = idParticipantes
+    if equipo is not None:
+        modificaciones.append("equipo =: equipo")
+        parametros["equipo"] = equipo
+
+sql = f"UPDATE JUEZ SET {", ".join(modificaciones) } WHERE id =: id"
+
+with get_connection() as conn:
+    with conn.cursor() as cur:
+        cur.execute(sql, parametros)
+    conn.commit()
+    print(f"Dato con ID={id} actualizado.")
+
+# DELETE - eliminacion de datos
+def delete_participantes(id: int):
+    sql = (
+        "DELETE FROM PARTICIPANTES WHERE id =: id"
+    )
+    parametros = {"id" : id}
+    
+    try:
+        with get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(sql, parametros)
+            conn.commit()
+            print(f"Dato eliminado \n {parametros}")
+    except oracledb.DatabaseError as e:
+        err = e
+        print(f"Error al eliminar dato: {err} \n {sql} \n {parametros}")
+
+def delete_atleta(id: int):
+    sql = (
+        "DELETE FROM ATLETA WHERE id =: id"
+    )
+    parametros = {"id" : id}
+    
+    try:
+        with get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(sql, parametros)
+            conn.commit()
+            print(f"Dato eliminado \n {parametros}")
+    except oracledb.DatabaseError as e:
+        err = e
+        print(f"Error al eliminar dato: {err} \n {sql} \n {parametros}")
+
+def delete_juez(id: int):
+    sql = (
+        "DELETE FROM JUEZ WHERE id =: id"
+    )
+    parametros = {"id" : id}
+    
+    try:
+        with get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(sql, parametros)
+            conn.commit()
+            print(f"Dato eliminado \n {parametros}")
+    except oracledb.DatabaseError as e:
+        err = e
+        print(f"Error al eliminar dato: {err} \n {sql} \n {parametros}")
+
+def delete_entrenador(id: int):
+    sql = (
+        "DELETE FROM ENTRENADOR WHERE id =: id"
+    )
+    parametros = {"id" : id}
+    
+    try:
+        with get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(sql, parametros)
+            conn.commit()
+            print(f"Dato eliminado \n {parametros}")
+    except oracledb.DatabaseError as e:
+        err = e
+        print(f"Error al eliminar dato: {err} \n {sql} \n {parametros}")
+
+def main():
+    pass
+
+if __name__ == "__main__":
+    main()
