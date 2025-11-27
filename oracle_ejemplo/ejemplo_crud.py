@@ -321,11 +321,10 @@ def update_participantes(
     if not modificaciones:
         return print("No has enviado datos por modificar")
     
-sql = f"UPDATE PARTICIPANTES SET {", ".join(modificaciones) } WHERE id =: id"
-
-with get_connection() as conn:
-    with conn.cursor() as cur:
-        cur.execute(sql, parametros)
+    sql = f"UPDATE PARTICIPANTES SET {", ".join(modificaciones)} WHERE id =: id"
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(sql, parametros)
     conn.commit()
     print(f"Dato con ID={id} actualizado.")
 
@@ -343,12 +342,11 @@ def update_atleta(
     if marca is not None:
         modificaciones.append("marca =: marca")
         parametros["marca"] = marca
-
-sql = f"UPDATE PARTICIPANTES SET {", ".join(modificaciones) } WHERE id =: id"
-
-with get_connection() as conn:
-    with conn.cursor() as cur:
-        cur.execute(sql, parametros)
+        
+    sql = f"UPDATE PARTICIPANTES SET {", ".join(modificaciones) } WHERE id =: id"    
+    with get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(sql, parametros)
     conn.commit()
     print(f"Dato con ID={id} actualizado.")
 
@@ -366,12 +364,11 @@ def update_juez(
     if especialidad is not None:
         modificaciones.append("especialidad =: especialidad")
         parametros["especialidad"] = especialidad
-
-sql = f"UPDATE JUEZ SET {", ".join(modificaciones) } WHERE id =: id"
-
-with get_connection() as conn:
-    with conn.cursor() as cur:
-        cur.execute(sql, parametros)
+        
+    sql = f"UPDATE JUEZ SET {", ".join(modificaciones) } WHERE id =: id"
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(sql, parametros)
     conn.commit()
     print(f"Dato con ID={id} actualizado.")
 
@@ -389,12 +386,11 @@ def update_entrenador(
     if equipo is not None:
         modificaciones.append("equipo =: equipo")
         parametros["equipo"] = equipo
-
-sql = f"UPDATE JUEZ SET {", ".join(modificaciones) } WHERE id =: id"
-
-with get_connection() as conn:
-    with conn.cursor() as cur:
-        cur.execute(sql, parametros)
+   
+        sql = f"UPDATE JUEZ SET {", ".join(modificaciones) } WHERE id =: id"
+        with get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(sql, parametros)
     conn.commit()
     print(f"Dato con ID={id} actualizado.")
 
