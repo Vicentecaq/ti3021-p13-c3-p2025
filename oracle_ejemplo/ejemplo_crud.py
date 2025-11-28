@@ -459,8 +459,41 @@ def delete_entrenador(id: int):
         err = e
         print(f"Error al eliminar dato: {err} \n {sql} \n {parametros}")
 
+
+from colorama import just_fix_windows_console
+from colorama import Fore, Style, Back
+just_fix_windows_console()
+
 def main():
-    pass
+    print(
+        Style.NORMAL+
+        """
+            ===================================
+            |     CRUD: Oracle + Python       |
+            |---------------------------------|
+            | 1. 
+            | 2.
+            | 3.
+            | 4. 
+            |---------------------------------|
+            | * La tabla empleado necesita al |
+            | menos un registro creado en la  |
+            | tabla Participante y Atleta     |
+            ===================================
+        """
+    )
+    opcion = input("Eligue una opción [1-4, 0]: ")
+
+    if opcion == "1":
+        pass
+    elif opcion == "2":
+        pass
+    elif opcion == "3":
+        pass
+    elif opcion == "4":
+        pass
+    elif opcion == "0":
+        pass
 
 if __name__ == "__main__":
     main()
