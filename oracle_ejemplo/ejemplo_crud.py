@@ -75,7 +75,6 @@ def create_participante(
     "nombre": nombre,
     "edad": edad,
     "numInscripcion": numInscripcion
-    #"fecha_nacimiento": datetime.strptime(fecha_nacimiento, '%d-%m-%Y')
     }
 
     try:
@@ -459,41 +458,128 @@ def delete_entrenador(id: int):
         err = e
         print(f"Error al eliminar dato: {err} \n {sql} \n {parametros}")
 
+def menu_participantes():
+    while True:
+        os.system("cls")
+        print(
+            """
+                ====================================
+                |      Menu: Participantes         |
+                |----------------------------------|
+                | 1. Insertar un dato              |
+                | 2. Consultar todos los datos     |
+                | 3. Consultar dato por ID         |
+                | 4. Modificar un dato             |
+                | 5. Eliminar un dato              |
+                | 0. Volver al menú principal      |
+                ====================================
+            """
+        )
+        opcion = input("Elige una opción [1-5, 0]: ")
 
-from colorama import just_fix_windows_console
-from colorama import Fore, Style, Back
-just_fix_windows_console()
+        if opcion == "1":
+            os.system("cls")
+            print("1. Insertar un Participante")
+            id = int(input("Ingrese ID del participante: "))
+            nombre = input("Ingrese nombre: ")
+            edad = int(input("Ingrese edad: "))
+            numInscripcion = int(input("Ingrese número de inscripción: "))
+            create_participante(id, nombre, edad, numInscripcion)
+            input("ENTER para continuar...")
+
+        elif opcion == "2":
+            os.system("cls")
+            print("2. Consultar todos los Participantes")
+            read_participantes()
+            input("ENTER para continuar...")
+
+        elif opcion == "3":
+            os.system("cls")
+            print("3. Consultar Participante por ID")
+            id = int(input("Ingrese ID: "))
+            read_participante_by_id(id)
+            input("ENTER para continuar...")
+
+        elif opcion == "4":
+            os.system("cls")
+            print("4. Modificar Participante")
+            id = int(input("Ingrese ID del Participante: "))
+            print("[Deja en blanco lo que NO quieres modificar]")
+
+            nombre = input("Nuevo nombre (opcional): ")
+            edad = input("Nueva edad (opcional): ")
+            numInscripcion = input("Nuevo número de inscripción (opcional): ")
+
+            if nombre.strip() == "": nombre = None
+            if edad.strip() == "": edad = None
+            else: edad = int(edad)
+            if numInscripcion.strip() == "": numInscripcion = None
+            else: numInscripcion = int(numInscripcion)
+
+            update_participantes(id, nombre, edad, numInscripcion)
+            input("ENTER para continuar...")
+
+        elif opcion == "5":
+            os.system("cls")
+            print("5. Eliminar Participante")
+            id = int(input("Ingrese ID: "))
+            delete_participantes(id)
+            input("ENTER para continuar...")
+
+        elif opcion == "0":
+            os.system("cls")
+            print("Volviendo al menú principal...")
+            break
+
+        else:
+            os.system("cls")
+            print("Opción incorrecta, intente nuevamente.")
+            input("ENTER para continuar...")
 
 def main():
-    print(
-        Style.NORMAL+
-        """
-            ===================================
-            |     CRUD: Oracle + Python       |
-            |---------------------------------|
-            | 1. 
-            | 2.
-            | 3.
-            | 4. 
-            |---------------------------------|
-            | * La tabla empleado necesita al |
-            | menos un registro creado en la  |
-            | tabla Participante y Atleta     |
-            ===================================
-        """
-    )
-    opcion = input("Eligue una opción [1-4, 0]: ")
+    while True:
+        os.system("cls")
+        print(
+            """
+                ====================================
+                |     CRUD: Oracle + Python        |
+                |----------------------------------|
+                | 1. Crear todas las tablas        |
+                | 2. Gestionar Participantes       |
+                | 3. Gestionar Atletas             |
+                | 4. Gestionar Jueces              |
+                | 5. Gestionar Entrenadores        |
+                | 0. Salir del sistema             |
+                ====================================
+            """
+        )
+        opcion = input("Elige una opción [1-5, 0]: ")
 
-    if opcion == "1":
-        pass
-    elif opcion == "2":
-        pass
-    elif opcion == "3":
-        pass
-    elif opcion == "4":
-        pass
-    elif opcion == "0":
-        pass
+        if opcion == "1":
+            os.system("cls")
+            create_all_tables()
+            input("ENTER para continuar...")
+
+        elif opcion == "2":
+            menu_participantes()
+
+        elif opcion == "3":
+            pass  # Te armo después menu_atleta()
+
+        elif opcion == "4":
+            pass  # Te armo después menu_juez()
+
+        elif opcion == "5":
+            pass  # Te armo después menu_entrenador()
+
+        elif opcion == "0":
+            print("Saliendo del sistema...")
+            break
+
+        else:
+            os.system("cls")
+            print("Opción incorrecta, intente nuevamente.")
+            input("ENTER para continuar...")
 
 if __name__ == "__main__":
     main()
