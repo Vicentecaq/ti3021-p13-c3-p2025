@@ -509,13 +509,11 @@ def menu_participantes():
             nombre = input("Nuevo nombre (opcional): ")
             edad = input("Nueva edad (opcional): ")
             numInscripcion = input("Nuevo número de inscripción (opcional): ")
-
             if nombre.strip() == "": nombre = None
             if edad.strip() == "": edad = None
             else: edad = int(edad)
             if numInscripcion.strip() == "": numInscripcion = None
             else: numInscripcion = int(numInscripcion)
-
             update_participantes(id, nombre, edad, numInscripcion)
             input("ENTER para continuar...")
 
@@ -524,6 +522,229 @@ def menu_participantes():
             print("5. Eliminar Participante")
             id = int(input("Ingrese ID: "))
             delete_participantes(id)
+            input("ENTER para continuar...")
+
+        elif opcion == "0":
+            os.system("cls")
+            print("Volviendo al menú principal...")
+            break
+
+        else:
+            os.system("cls")
+            print("Opción incorrecta, intente nuevamente.")
+            input("ENTER para continuar...")
+
+def menu_atletas():
+    while True:
+        os.system("cls")
+        print(
+            """
+                ====================================
+                |         Menu: Atletas            |
+                |----------------------------------|
+                | 1. Insertar un dato              |
+                | 2. Consultar todos los datos     |
+                | 3. Consultar dato por ID         |
+                | 4. Modificar un dato             |
+                | 5. Eliminar un dato              |
+                | 0. Volver al menú principal      |
+                ====================================
+            """
+        )
+        opcion = input("Elige una opción [1-5, 0]: ")
+
+        if opcion == "1":
+            os.system("cls")
+            print("1. Insertar un Atleta")
+            id = int(input("Ingrese ID del atleta: "))
+            id_participante = int(input("Ingrese ID del Participante asociado: "))
+            deporte = input("Ingrese deporte: ")
+            create_atleta(id, id_participante, deporte)
+            input("ENTER para continuar...")
+
+        elif opcion == "2":
+            os.system("cls")
+            print("2. Consultar todos los Atletas")
+            read_atletas()
+            input("ENTER para continuar...")
+
+        elif opcion == "3":
+            os.system("cls")
+            print("3. Consultar Atleta por ID")
+            id = int(input("Ingrese ID: "))
+            read_atleta_by_id(id)
+            input("ENTER para continuar...")
+
+        elif opcion == "4":
+            os.system("cls")
+            print("4. Modificar Atleta")
+            id = int(input("Ingrese ID del Atleta: "))
+            print("[Deja en blanco lo que NO quieres modificar]")
+
+            id_participante = input("Nuevo ID de Participante asociado (opcional): ")
+            deporte = input("Nuevo deporte (opcional): ")
+            
+            if id_participante.strip() == "": id_participante = None
+            else: id_participante = int(id_participante) 
+            if deporte.strip() == "": deporte = None
+            
+            update_atleta(id, id_participante, deporte)
+            input("ENTER para continuar...")
+
+        elif opcion == "5":
+            os.system("cls")
+            print("5. Eliminar Atleta")
+            id = int(input("Ingrese ID: "))
+            delete_atleta(id)
+            input("ENTER para continuar...")
+
+        elif opcion == "0":
+            os.system("cls")
+            print("Volviendo al menú principal...")
+            break
+
+        else:
+            os.system("cls")
+            print("Opción incorrecta, intente nuevamente.")
+            input("ENTER para continuar...")
+
+def menu_jueces():
+    while True:
+        os.system("cls")
+        print(
+            """
+                ====================================
+                |          Menu: Jueces            |
+                |----------------------------------|
+                | 1. Insertar un dato              |
+                | 2. Consultar todos los datos     |
+                | 3. Consultar dato por ID         |
+                | 4. Modificar un dato             |
+                | 5. Eliminar un dato              |
+                | 0. Volver al menú principal      |
+                ====================================
+            """
+        )
+        opcion = input("Elige una opción [1-5, 0]: ")
+
+        if opcion == "1":
+            os.system("cls")
+            print("1. Insertar un Juez")
+            id = int(input("Ingrese ID del juez: "))
+            id_participante = int(input("Ingrese ID del Participante asociado: "))
+            experiencia = int(input("Ingrese años de experiencia: "))
+            create_juez(id, id_participante, experiencia)
+            input("ENTER para continuar...")
+
+        elif opcion == "2":
+            os.system("cls")
+            print("2. Consultar todos los Jueces")
+            read_jueces()
+            input("ENTER para continuar...")
+
+        elif opcion == "3":
+            os.system("cls")
+            print("3. Consultar Juez por ID")
+            id = int(input("Ingrese ID: "))
+            read_juez_by_id(id)
+            input("ENTER para continuar...")
+
+        elif opcion == "4":
+            os.system("cls")
+            print("4. Modificar Juez")
+            id = int(input("Ingrese ID del Juez: "))
+            print("[Deja en blanco lo que NO quieres modificar]")
+
+            id_participante = input("Nuevo ID de Participante asociado (opcional): ")
+            experiencia = input("Nuevos años de experiencia (opcional): ")
+            
+            if id_participante.strip() == "": id_participante = None
+            else: id_participante = int(id_participante)
+            if experiencia.strip() == "": experiencia = None
+            else: experiencia = int(experiencia)
+            
+            update_juez(id, id_participante, experiencia)
+            input("ENTER para continuar...")
+
+        elif opcion == "5":
+            os.system("cls")
+            print("5. Eliminar Juez")
+            id = int(input("Ingrese ID: "))
+            delete_juez(id)
+            input("ENTER para continuar...")
+
+        elif opcion == "0":
+            os.system("cls")
+            print("Volviendo al menú principal...")
+            break
+
+        else:
+            os.system("cls")
+            print("Opción incorrecta, intente nuevamente.")
+            input("ENTER para continuar...")
+
+def menu_entrenadores():
+    while True:
+        os.system("cls")
+        print(
+            """
+                ====================================
+                |       Menu: Entrenadores         |
+                |----------------------------------|
+                | 1. Insertar un dato              |
+                | 2. Consultar todos los datos     |
+                | 3. Consultar dato por ID         |
+                | 4. Modificar un dato             |
+                | 5. Eliminar un dato              |
+                | 0. Volver al menú principal      |
+                ====================================
+            """
+        )
+        opcion = input("Elige una opción [1-5, 0]: ")
+
+        if opcion == "1":
+            os.system("cls")
+            print("1. Insertar un Entrenador")
+            id = int(input("Ingrese ID del entrenador: "))
+            id_participante = int(input("Ingrese ID del Participante asociado: "))
+            certificacion = input("Ingrese certificación: ")
+            create_entrenador(id, id_participante, certificacion)
+            input("ENTER para continuar...")
+
+        elif opcion == "2":
+            os.system("cls")
+            print("2. Consultar todos los Entrenadores")
+            read_entrenadores()
+            input("ENTER para continuar...")
+
+        elif opcion == "3":
+            os.system("cls")
+            print("3. Consultar Entrenador por ID")
+            id = int(input("Ingrese ID: "))
+            read_entrenador_by_id(id)
+            input("ENTER para continuar...")
+
+        elif opcion == "4":
+            os.system("cls")
+            print("4. Modificar Entrenador")
+            id = int(input("Ingrese ID del Entrenador: "))
+            print("[Deja en blanco lo que NO quieres modificar]")
+
+            id_participante = input("Nuevo ID de Participante asociado (opcional): ")
+            certificacion = input("Nueva certificación (opcional): ")
+            
+            if id_participante.strip() == "": id_participante = None
+            else: id_participante = int(id_participante)
+            if certificacion.strip() == "": certificacion = None
+            
+            update_entrenador(id, id_participante, certificacion)
+            input("ENTER para continuar...")
+
+        elif opcion == "5":
+            os.system("cls")
+            print("5. Eliminar Entrenador")
+            id = int(input("Ingrese ID: "))
+            delete_entrenador(id)
             input("ENTER para continuar...")
 
         elif opcion == "0":
@@ -561,16 +782,20 @@ def main():
             input("ENTER para continuar...")
 
         elif opcion == "2":
-            menu_participantes()
+            os.system("cls")
+            menu_participantes() 
 
         elif opcion == "3":
-            pass  # Te armo después menu_atleta()
+            os.system("cls")
+            menu_atletas() 
 
         elif opcion == "4":
-            pass  # Te armo después menu_juez()
+            os.system("cls")
+            menu_jueces()
 
         elif opcion == "5":
-            pass  # Te armo después menu_entrenador()
+            os.system("cls")
+            menu_entrenadores()
 
         elif opcion == "0":
             print("Saliendo del sistema...")
