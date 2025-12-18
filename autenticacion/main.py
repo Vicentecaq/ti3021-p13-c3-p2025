@@ -112,20 +112,19 @@ class Finance:
     
     def get_indicator(self, indicator: str, fecha: str = None) -> float:
         try:
-            if not fecha:
-                dd = datetime.datetime.now().day
-                mm = datetime.datetime.now().month
-                yyyy = datetime.datetime.now().year
-                fecha = f"{dd}-{mm}-{yyyy}"
+            if fecha:
+                url = f"{self.base_url}/{indicator}/{fecha}"
+            else:
+                url = f"{self.base_url}/{indicator}" # <--- Trae lo más nuevo
 
-            url = f"{self.base_url}/{indicator}/{fecha}"
             respuesta = requests.get(url).json()
 
             if "serie" in respuesta and len(respuesta["serie"]) > 0:
                 return respuesta["serie"][0]["valor"]
+        
             return None
         except Exception as e:
-            print(f"Hubo un error con la solicitud: {e}")
+            print(f"Error al obtener indicador: {e}")
             return None
 
     def save_indicator(self, db, indicator, value, username):
@@ -193,7 +192,7 @@ if __name__ == "__main__":
         password=os.getenv("ORACLE_PASSWORD"),
         dsn=os.getenv("ORACLE_DSN")
         )
-    Finance = Finance()
+    fin = Finance()
     db.create_all_tables()
     db.query("SELECT * FROM USERS")
 
@@ -218,17 +217,17 @@ if __name__ == "__main__":
                     sub = input("Opción: ")
 
                     if sub == "1":
-                        Finance.get_usd(db, u)
+                        fin.get_usd(db, u)
                     elif sub == "2":
-                        Finance.get_eur(db, u)
+                        fin.get_eur(db, u)
                     elif sub == "3":
-                        Finance.get_uf(db, u)
+                        fin.get_uf(db, u)
                     elif sub == "4":
-                        Finance.get_ivp(db, u)
+                        fin.get_ivp(db, u)
                     elif sub == "5":
-                        Finance.get_ipc(db, u)
+                        fin.get_ipc(db, u)
                     elif sub == "6":
-                        Finance.get_utm(db, u)
+                        fin.get_utm(db, u)
                     elif sub == "0": 
                         break
     
