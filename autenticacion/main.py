@@ -85,7 +85,6 @@ class Auth:
 
     @staticmethod
     def login(db: Database, username: str, password: str) -> bool:
-#       password_enc = password.encode("UTF-8")
         sql_login = "SELECT password FROM USERS WHERE username = :u"
         resultado = db.query(sql = sql_login, parameters={"u": username})
         
@@ -187,15 +186,16 @@ class Finance:
             print(f"\n[API] El valor de la UTM es: ${valor}")
             self.save_indicator(db, "utm", valor, user)
             print("[DB] Guardado en el historial.")    
- 
+
 if __name__ == "__main__":
-    db = Database(
+    db= Database(
         username=os.getenv("ORACLE_USER"),
-        password=os.getenv("ORACLE_PASSWORD"), 
+        password=os.getenv("ORACLE_PASSWORD"),
         dsn=os.getenv("ORACLE_DSN")
         )
-    fin = Finance()
+    Finance = Finance()
     db.create_all_tables()
+    db.query("SELECT * FROM USERS")
 
     while True:
         os.system("cls" if os.name == "nt" else "clear")
@@ -218,17 +218,17 @@ if __name__ == "__main__":
                     sub = input("Opción: ")
 
                     if sub == "1":
-                        fin.get_usd(db, u)
+                        Finance.get_usd(db, u)
                     elif sub == "2":
-                        fin.get_eur(db, u)
+                        Finance.get_eur(db, u)
                     elif sub == "3":
-                        fin.get_uf(db, u)
+                        Finance.get_uf(db, u)
                     elif sub == "4":
-                        fin.get_ivp(db, u)
+                        Finance.get_ivp(db, u)
                     elif sub == "5":
-                        fin.get_ipc(db, u)
+                        Finance.get_ipc(db, u)
                     elif sub == "6":
-                        fin.get_utm(db, u)
+                        Finance.get_utm(db, u)
                     elif sub == "0": 
                         break
     
