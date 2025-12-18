@@ -130,13 +130,91 @@ class Finance:
     def get_utm(self, fecha: str = None):
         self.get_indicator("utm", fecha)
 
+def menu_principal():
+    print(
+        """
+            ====================================
+            |         Menu Principal           |
+            |----------------------------------|
+            | 1. Iniciar sesion                |
+            | 2. Salir                         |
+            ====================================
+        """
+    )
+
+def menu_indicadores():
+    print(
+        """
+            ====================================
+            |           Indicadores            |
+            |----------------------------------|
+            | 1. UF                            |
+            | 2. Dolar                         |
+            | 3. Euro                          |
+            | 4. IVP                           |
+            | 5. IPC                           |
+            | 6. UTM                           |
+            | 7. Volver                        |
+            ====================================
+        """
+    )
+
 if __name__ == "__main__":
     db= Database(
         username=os.getenv("ORACLE_USER"),
         password=os.getenv("ORACLE_PASSWORD"),
         dsn=os.getenv("ORACLE_DSN")
         )
-    
-    db.query("SELECT sysdate FROM dual")
+    Finance = Finance()
+
+    while True:
+        menu_principal()
+        opcion = input("Seleccione una opcion: ")
+        
+        if opcion == "1":
+            usuario = input("Usuario: ")
+            password = input("Contraseña: ")
+
+            if Auth.login(db, usuario, password):
+                print("Bienvenido", usuario)
+
+                while True:
+                    menu_indicadores()
+                    op = input("Seleccione indicador: ")
+
+                    if op == "1":
+                        Finance.get_uf(db, usuario)
+                    elif op == "2":
+                        Finance.get_usd(db, usuario)
+                    elif op == "3":
+                        Finance.get_eur(db, usuario)
+                    elif op == "4":
+                        Finance.get_ivp(db, usuario)
+                    elif op == "5":
+                        Finance.get_ipc(db, usuario)
+                    elif op == "6":
+                        Finance.get_utm(db, usuario)
+                    elif op == "7":
+                        break
+                    else:
+                        print("Opción no válida")
+            else:
+                print("Usuario o contraseña incorrectos")
+
+        elif opcion == "2":
+            print("Saliendo del sistema...")
+            break
+        else:
+            print("Opción inválida")
+
+if __name__ == "__main__":
+    db= Database(
+        username=os.getenv("ORACLE_USER"),
+        password=os.getenv("ORACLE_PASSWORD"),
+        dsn=os.getenv("ORACLE_DSN")
+        )
+    Finance = Finance()
+    db.create_all_tables()
+    db.query("SELECT * FROM USERS")
 
     Auth.login(db,"soyelseba","alskjflsakf")
