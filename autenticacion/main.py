@@ -115,7 +115,7 @@ class Finance:
             if fecha:
                 url = f"{self.base_url}/{indicator}/{fecha}"
             else:
-                url = f"{self.base_url}/{indicator}" # <--- Trae lo más nuevo
+                url = f"{self.base_url}/{indicator}" 
 
             respuesta = requests.get(url).json()
 
