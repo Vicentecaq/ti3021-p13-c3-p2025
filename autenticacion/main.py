@@ -67,12 +67,12 @@ class Auth:
         print("registrando usuario")
         password_bytes = password.encode("UTF-8")
         salt = bcrypt.gensalt(12)
-        hash_password = bcrypt.hashpw(password_bytes,salt)
+        hashed = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt(12))
 
         usuario = {
             "id_v": id_u,
             "user_v": username,
-            "pw_v": hash_password
+            "pw_v": hashed
         }
 
         sql_insert = "INSERT INTO USERS(id_u,username,password) VALUES (:id_v, :user_v, :pw_v)"
@@ -92,7 +92,6 @@ class Auth:
             print("\nUsuario no existe.")
             return False
 
-        # hashed_password = resultado[0][0]
         hash_en_db = resultado[0][0]
 
         try:
