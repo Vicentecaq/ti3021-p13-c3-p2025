@@ -12,6 +12,6 @@ class App:
         self.page.add(
             ft.Text(value="Hola mundo")
         )
-
+# Inicializamos la App
 if __name__ == "__main__":
     ft.app(target=App)
