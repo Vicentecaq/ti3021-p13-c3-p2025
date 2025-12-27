@@ -6,8 +6,8 @@ from dotenv import load_dotenv
 from typing import Optional
 import datetime
 
+oracledb.init_oracle_client()
 load_dotenv()
-
 
 class Database:
     def __init__(self, username, dsn, password):
@@ -16,8 +16,11 @@ class Database:
         self.password = password
 
     def get_connection(self):
-        return oracledb.connect(user=self.username, password=self.password, dsn=self.dsn)
-
+        return oracledb.connect(
+        user=self.username,
+        password=self.password,
+        dsn=self.dsn
+    )
     def create_all_tables(self):
         tables = [
             (
@@ -26,11 +29,25 @@ class Database:
                 "username VARCHAR(32) UNIQUE,"
                 "password VARCHAR(128)"
                 ")"
+            ),
+            (
+                "CREATE TABLE CONSULTAS ("
+                "id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,"
+                "username VARCHAR(32),"
+                "indicador VARCHAR(20),"
+                "fecha_indicador VARCHAR(20),"
+                "valor NUMBER,"
+                "fecha_consulta TIMESTAMP,"
+                "fuente VARCHAR(100)"
+                ")"  
             )
         ]
 
         for table in tables:
-            self.query(table)
+            try:
+                self.query(table)
+            except Exception:
+                pass
 
     def query(self, sql: str, parameters: Optional[dict] = None):
         try:
@@ -57,7 +74,7 @@ class Auth:
             parameters={"username": username}
         )
 
-        if len(resultado) < 0:
+        if len(resultado) == 0:
             return {"message": "No hay coincidencias", "success": False}
 
         hashed_password = bytes.fromhex(resultado[0][2])

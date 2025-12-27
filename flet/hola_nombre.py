@@ -13,7 +13,7 @@ class App:
         self.page.tittle = "Hola nombre"
 
         self.input_nombre = ft.TextField( hint_text="Ingresa tu nombre" )
-        self.button_saludar = ft.Button( text="Saludar", on_click=self.handle_saludo )
+        self.button_saludar = ft.ElevatedButton( text="Saludar", on_click=self.handle_saludo )
         self.text_saludo = ft.Text( value="" )
 
         self.build()
